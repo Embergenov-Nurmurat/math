@@ -20,7 +20,7 @@ nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(-
 nav .wrap{display:flex;gap:8px;align-items:center;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
 nav a{white-space:nowrap;text-decoration:none;color:var(--mut);padding:6px 12px;border-radius:6px;font-weight:500;font-size:14px;transition:.25s}
 nav a:hover{color:var(--tx)}nav a.on{background:var(--tx);color:var(--bg)}
-#lg{margin-left:auto;display:flex;gap:4px}#th,#lg button{border:1px solid var(--bd);background:var(--bg2);color:var(--tx);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px;transition:.2s}#lg button.on{background:var(--tx);color:var(--bg)}.ex{margin-top:10px;padding:8px 10px;border-radius:6px;background:color-mix(in srgb,var(--hl) 24%,transparent);font:500 16px/1.5 "STIX Two Text","Cambria Math",serif}.ex b{font:700 12px Onest,sans-serif;margin-right:8px}.card p:empty{display:none}
+#lg{margin-left:auto;display:flex;gap:4px}#tg,#lg button{border:1px solid var(--bd);background:var(--bg2);color:var(--tx);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px;transition:.2s}#lg button.on{background:var(--tx);color:var(--bg)}.ex{margin-top:10px;padding:8px 10px;border-radius:6px;background:color-mix(in srgb,var(--hl) 24%,transparent);font:500 16px/1.5 "STIX Two Text","Cambria Math",serif}.ex b{font:700 12px Onest,sans-serif;margin-right:8px}.card p:empty{display:none}
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:56px 0 36px}
 h1{font:700 clamp(30px,5vw,52px)/1.1 Unbounded,sans-serif;margin:0 0 18px;letter-spacing:-.02em}
 h1 mark{background:linear-gradient(transparent 58%,var(--hl) 58%);color:inherit;padding:0 4px;background-size:0 100%;background-repeat:no-repeat;animation:mk 1s .9s forwards}
@@ -71,7 +71,7 @@ footer{padding:50px 0 40px;color:var(--mut);font-size:14px}
 </style>
 </head>
 <body>
-<nav><div class="wrap" id="nav"><span id="lg"><button data-l="ru">RU</button><button data-l="en">EN</button><button data-l="uz">UZ</button><button id="th" title="Тема">◐</button></span></div></nav>
+<nav><div class="wrap" id="nav"><span id="lg"><button data-l="ru">RU</button><button data-l="en">EN</button><button data-l="uz">UZ</button><button id="tg" title="Тема">◐</button></span></div></nav>
 <main class="wrap">
 <header class="hero">
 <div>
@@ -238,7 +238,7 @@ document.querySelectorAll('#nav a').forEach(a=>a.remove());
 $('#nav').insertAdjacentHTML('afterbegin',[['lab',d.lab],...S.map(s=>[s.id,s.n[l]])].map(a=>`<a href="#${a[0]}">${a[1]}</a>`).join(''));
 document.querySelectorAll('#app .reveal').forEach(el=>io.observe(el));document.querySelectorAll('#app [data-s]').forEach(s=>so.observe(s));first=false;prog();$('#q').dispatchEvent(new Event('input'))}
 function setLang(l){lang=l;try{localStorage.setItem('mlang',l)}catch(e){}const d=I[l];document.documentElement.lang=l;document.title=d.ttl;
-$('h1').innerHTML=d.h1;$('.hero p').textContent=d.p;$('#q').placeholder=d.ph;$('#lab h2').innerHTML='<span>⌬</span>'+d.lab;$('.panel h3').textContent=d.uc;$('#co h3').textContent=d.tr;$('footer .wrap').textContent=d.ft;$('#none').textContent=d.no;$('#th').title=d.th;
+$('h1').innerHTML=d.h1;$('.hero p').textContent=d.p;$('#q').placeholder=d.ph;$('#lab h2').innerHTML='<span>⌬</span>'+d.lab;$('.panel h3').textContent=d.uc;$('#co h3').textContent=d.tr;$('footer .wrap').textContent=d.ft;$('#none').textContent=d.no;$('#tg').title=d.th;
 document.querySelectorAll('#lg [data-l]').forEach(b=>b.classList.toggle('on',b.dataset.l===l));draw();uc()}
 $('#app').addEventListener('click',e=>{const b=e.target.closest('.fav');if(!b)return;const c=b.parentNode,k=c.dataset.k;L[k]=!L[k];c.classList.toggle('on',L[k]);try{localStorage.setItem('ml',JSON.stringify(L))}catch(x){}prog()});
 $('#q').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();let any=false;document.querySelectorAll('#app section').forEach(s=>{let v=0;s.querySelectorAll('.card').forEach(c=>{const m=!q||(c.textContent+c.dataset.t).toLowerCase().includes(q);c.hidden=!m;if(m){v++;c.classList.add('in')}});s.hidden=!v;if(v)any=true});$('#none').style.display=any?'none':'block'});
@@ -261,7 +261,7 @@ $('#cv').innerHTML=`<span>AB = <b>${fm(ab)}</b></span><span>BC = <b>${fm(bc)}</b
 const X=[ax,bx,cx],Y=[ay,by,cy],mx=Math.min(...X),my=Math.min(...Y),sc=Math.min(190/(Math.max(...X)-mx||1),110/(Math.max(...Y)-my||1)),P=X.map((x,i)=>[20+(x-mx)*sc,130-(Y[i]-my)*sc]);
 $('#tsv').innerHTML=`<polygon points="${P.join(' ')}" fill="var(--hl)" fill-opacity=".35" stroke="var(--ac)" stroke-width="2.5" style="transition:all .4s"/>`+P.map((p,i)=>`<text x="${p[0]+6}" y="${p[1]-6}" fill="var(--tx)" font-size="14" font-style="italic">${'ABC'[i]}</text>`).join('')}
 document.querySelectorAll('#co input').forEach(i=>i.addEventListener('input',tri));tri();
-const R=document.documentElement;$('#th').onclick=()=>{const dk=R.dataset.theme?R.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;R.dataset.theme=dk?'light':'dark'};
+const R=document.documentElement;$('#tg').onclick=()=>{const dk=R.dataset.theme?R.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;R.dataset.theme=dk?'light':'dark'};
 document.querySelectorAll('#lg [data-l]').forEach(b=>b.onclick=()=>setLang(b.dataset.l));setLang(lang);
 </script>
 </body>
