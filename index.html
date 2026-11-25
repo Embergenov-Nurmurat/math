@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Формулы и лайфхаки: математика и геометрия</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;700&family=STIX+Two+Text:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5fb;--bg2:#fff;--tx:#14213d;--mut:#5b6785;--ac:#2f4cff;--hl:#ffd23f;--bd:#d5dcee;--grid:#dfe5f3;--ok:#12a36b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1430;--bg2:#162046;--tx:#e8edff;--mut:#9aa7d0;--ac:#8aa2ff;--bd:#2a376b;--grid:#18224a;--ok:#3ddc9b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1430;--bg2:#162046;--tx:#e8edff;--mut:#9aa7d0;--ac:#8aa2ff;--bd:#2a376b;--grid:#18224a;--ok:#3ddc9b;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);height:auto}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.55 Onest,system-ui,sans-serif;
+background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;transition:background-color .4s,color .4s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);border-bottom:1px solid var(--bd)}
+nav .wrap{display:flex;gap:8px;align-items:center;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
+nav a{white-space:nowrap;text-decoration:none;color:var(--mut);padding:6px 12px;border-radius:6px;font-weight:500;font-size:14px;transition:.25s}
+nav a:hover{color:var(--tx)}nav a.on{background:var(--tx);color:var(--bg)}
+#lg{margin-left:auto;display:flex;gap:4px}#th,#lg button{border:1px solid var(--bd);background:var(--bg2);color:var(--tx);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px;transition:.2s}#lg button.on{background:var(--tx);color:var(--bg)}.ex{margin-top:10px;padding:8px 10px;border-radius:6px;background:color-mix(in srgb,var(--hl) 24%,transparent);font:500 16px/1.5 "STIX Two Text","Cambria Math",serif}.ex b{font:700 12px Onest,sans-serif;margin-right:8px}.card p:empty{display:none}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:56px 0 36px}
+h1{font:700 clamp(30px,5vw,52px)/1.1 Unbounded,sans-serif;margin:0 0 18px;letter-spacing:-.02em}
+h1 mark{background:linear-gradient(transparent 58%,var(--hl) 58%);color:inherit;padding:0 4px;background-size:0 100%;background-repeat:no-repeat;animation:mk 1s .9s forwards}
+@keyframes mk{to{background-size:100% 100%}}
+.hero p{color:var(--mut);max-width:46ch;margin:0 0 22px;font-size:18px}
+.bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden;max-width:360px}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+#pt{font-size:14px;color:var(--mut);margin-top:8px}
+.tri{width:100%;height:auto}
+.tri .ln{stroke:var(--ac);stroke-width:3;fill:none;stroke-dasharray:700;stroke-dashoffset:700;animation:dr 2s .2s ease forwards}
+.tri .ar{stroke:var(--tx);stroke-width:2;fill:none;stroke-dasharray:200;stroke-dashoffset:200;animation:dr 1s 1.6s ease forwards}
+.tri text{fill:var(--tx);font:italic 500 20px "STIX Two Text",serif;opacity:0;animation:fi .6s 1.9s forwards}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes fi{to{opacity:1}}
+.find{padding:8px 0 20px}
+input[type=search]{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--bd);border-radius:8px;background:var(--bg2);color:var(--tx);font:inherit}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+h2{font:700 clamp(22px,3vw,30px)/1.2 Unbounded,sans-serif;margin:48px 0 18px;display:flex;gap:12px;align-items:center}
+h2 span{display:grid;place-items:center;width:44px;height:44px;background:var(--hl);color:#14213d;border-radius:8px;font:500 22px "STIX Two Text",serif;flex:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{position:relative;background:var(--bg2);border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:4px 10px 10px 4px;padding:16px 16px 14px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px -12px var(--ac)}
+.card.on{border-left-color:var(--ok)}
+.card h3{margin:0 36px 10px 0;font-size:15px;font-weight:700}
+.f{font:500 19px/1.7 "STIX Two Text","Cambria Math",serif;font-style:italic;padding:8px 10px;background:var(--bg);border-radius:6px;overflow-x:auto}
+.card p{margin:10px 0 0;color:var(--mut);font-size:14px}
+.fav{position:absolute;top:10px;right:10px;border:0;background:none;color:var(--bd);font-size:22px;cursor:pointer;transition:.3s}
+.fav:hover{transform:scale(1.2) rotate(15deg)}.on .fav{color:var(--ok);transform:scale(1.15)}
+.fr{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 3px;line-height:1.25}
+.fr i{font-style:inherit;padding:0 4px}.fr i:first-child{border-bottom:1.5px solid currentColor}
+table{border-collapse:collapse;font:500 16px "STIX Two Text",serif;font-style:normal;width:100%}
+td,th{border:1px solid var(--bd);padding:3px 6px;text-align:center}th{background:var(--bg2)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s,box-shadow .3s}
+.reveal.in{opacity:1;transform:none;transition-delay:var(--d,0s)}
+.lab{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:18px}
+.panel h3{margin:0 0 12px;font:700 16px Unbounded,sans-serif}
+.panel svg{width:100%;height:auto;max-height:260px;display:block;background:var(--bg);border-radius:8px}
+.panel input[type=range]{width:100%;accent-color:var(--ac);margin:10px 0}
+.vals{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 14px;font:500 17px "STIX Two Text",serif;margin-top:6px}
+.vals b{color:var(--ac);font-weight:500}
+.q{display:flex;gap:6px;flex-wrap:wrap}.q button{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:6px;padding:4px 10px;cursor:pointer;transition:.2s}.q button:hover{background:var(--hl);color:#14213d}
+.pts{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px 8px;align-items:center;margin-bottom:10px}
+.pts input{width:100%;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font:inherit}
+.none{display:none;color:var(--mut);padding:30px 0}
+footer{padding:50px 0 40px;color:var(--mut);font-size:14px}
+@media(max-width:760px){.hero,.lab{grid-template-columns:1fr}.hero{padding-top:32px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.tri .ln,.tri .ar{stroke-dashoffset:0}.tri text{opacity:1}h1 mark{background-size:100% 100%}}
+</style>
+</head>
+<body>
+<nav><div class="wrap" id="nav"><span id="lg"><button data-l="ru">RU</button><button data-l="en">EN</button><button data-l="uz">UZ</button><button id="th" title="Тема">◐</button></span></div></nav>
+<main class="wrap">
+<header class="hero">
+<div>
+<h1>Формулы, которые <mark>решают</mark> задачи за минуту</h1>
+<p>Тригонометрия, углы, площади, теоремы и приёмы вроде формулы Пика. Отмечайте звездой то, что выучили, и следите за прогрессом.</p>
+<div class="bar"><i id="pb"></i></div><div id="pt"></div>
+</div>
+<svg class="tri" viewBox="0 0 320 240" aria-hidden="true">
+<path class="ln" d="M40 200 H280 L40 40 Z"/><path class="ar" d="M40 176 H64 V200"/><path class="ar" d="M236 200 A44 44 0 0 0 248 170"/>
+<text x="150" y="222">b</text><text x="18" y="125">a</text><text x="170" y="108">c</text><text x="206" y="192">α</text>
+</svg>
+</header>
+
+<div class="find"><input type="search" id="q" placeholder="Поиск: синус, площадь, Пик…" aria-label="Поиск формул"></div>
+
+<section id="lab" data-s>
+<h2><span>⌬</span>Лаборатория</h2>
+<div class="lab">
+<div class="panel reveal"><h3>Единичная окружность</h3>
+<svg viewBox="0 0 240 240"><g stroke="var(--bd)" stroke-width="1"><line x1="10" y1="120" x2="230" y2="120"/><line x1="120" y1="10" x2="120" y2="230"/></g>
+<circle cx="120" cy="120" r="95" fill="none" stroke="var(--mut)" stroke-width="1.5"/>
+<path id="arc" fill="none" stroke="var(--hl)" stroke-width="4"/>
+<line id="vs" stroke="var(--ok)" stroke-width="3"/><line id="rd" x1="120" y1="120" stroke="var(--ac)" stroke-width="3"/><circle id="pp" r="6" fill="var(--ac)"/></svg>
+<input type="range" id="ang" min="0" max="360" value="45" aria-label="Угол">
+<div class="q"><button data-a="30">30°</button><button data-a="45">45°</button><button data-a="60">60°</button><button data-a="90">90°</button><button data-a="180">180°</button><button data-a="270">270°</button></div>
+<div class="vals" id="uv"></div></div>
+<div class="panel reveal" id="co"><h3>Треугольник по координатам</h3>
+<div class="pts"><b>A</b><input type="number" value="0"><input type="number" value="0"><b>B</b><input type="number" value="4"><input type="number" value="0"><b>C</b><input type="number" value="0"><input type="number" value="3"></div>
+<svg viewBox="0 0 240 150" id="tsv"></svg><div class="vals" id="cv"></div></div>
+</div></section>
+<div id="app"></div>
+<p class="none" id="none">Ничего не найдено. Попробуйте другое слово.</p>
+</main>
+<footer><div class="wrap">Совет: сначала поймите, откуда формула берётся, а потом заучивайте. Тогда она не забывается.</div></footer>
+
+<script>
+const F=(a,b)=>`<span class="fr"><i>${a}</i><i>${b}</i></span>`;
+const S=[
+{id:'trig',t:'Тригонометрия',e:'∿',x:[
+['Синус и косинус',`sin α = ${F('a','c')}, cos α = ${F('b','c')}`,'a — противолежащий катет, b — прилежащий, c — гипотенуза.'],
+['Тангенс и котангенс',`tg α = ${F('sin α','cos α')} = ${F('a','b')}<br>ctg α = ${F('cos α','sin α')} = ${F('1','tg α')}`,'tg α · ctg α = 1.'],
+['Основное тождество',`sin²α + cos²α = 1`,'Отсюда: 1 + tg²α = 1/cos²α и 1 + ctg²α = 1/sin²α.'],
+['Таблица значений',`<table><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th></tr><tr><th>sin</th><td>0</td><td>½</td><td>√2/2</td><td>√3/2</td><td>1</td></tr><tr><th>cos</th><td>1</td><td>√3/2</td><td>√2/2</td><td>½</td><td>0</td></tr><tr><th>tg</th><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td>—</td></tr><tr><th>ctg</th><td>—</td><td>√3</td><td>1</td><td>√3/3</td><td>0</td></tr></table>`,'Синус: √0, √1, √2, √3, √4 делим на 2. Косинус — то же в обратном порядке.'],
+['Двойной угол',`sin 2α = 2 sin α cos α<br>cos 2α = cos²α − sin²α = 1 − 2sin²α`,'Пригодится для понижения степени: sin²α = (1 − cos 2α)/2.'],
+['Сумма и разность углов',`sin(α ± β) = sin α cos β ± cos α sin β<br>cos(α ± β) = cos α cos β ∓ sin α sin β`,'Знак у косинуса меняется на противоположный.'],
+['Тангенс суммы',`tg(α ± β) = ${F('tg α ± tg β','1 ∓ tg α tg β')}`,''],
+['Формулы приведения',`sin(90° − α) = cos α<br>sin(180° − α) = sin α<br>cos(180° − α) = −cos α`,'Для 90° и 270° функция меняется (sin↔cos), для 180° и 360° нет. Знак — по четверти.'],
+['Радианы',`π рад = 180°<br>α° = α·${F('π','180')} рад`,'1 рад ≈ 57,3°. Длина дуги: l = r·φ.']]},
+{id:'ang',t:'Углы',e:'∠',x:[
+['Сумма углов треугольника',`∠A + ∠B + ∠C = 180°`,'Внешний угол равен сумме двух несмежных с ним внутренних.'],
+['Сумма углов многоугольника',`(n − 2)·180°<br>∠ правильного = ${F('(n − 2)·180°','n')}`,'Сумма внешних углов любого выпуклого многоугольника — 360°.'],
+['Вписанный угол',`∠вписанный = ½ ∠центрального = ½ ⌣дуги`,'Угол, опирающийся на диаметр, равен 90°.'],
+['Угол между хордой и касательной',`∠ = ½ ⌣дуги`,'Угол между двумя секущими — полуразность дуг.'],
+['Параллельные прямые',`накрест лежащие равны<br>односторонние: α + β = 180°`,'Соответственные углы тоже равны.'],
+['Угол между векторами',`cos φ = ${F('x₁x₂ + y₁y₂','√(x₁² + y₁²)·√(x₂² + y₂²)')}`,'Так находят угол при вершине по координатам: векторы строим от этой вершины к соседним.'],
+['Угол между прямыми',`tg φ = |${F('k₂ − k₁','1 + k₁k₂')}|`,'Для y = k₁x + b₁ и y = k₂x + b₂. Перпендикулярны при k₁k₂ = −1.'],
+['Угол наклона отрезка',`tg φ = ${F('y₂ − y₁','x₂ − x₁')}`,'φ — угол с осью Ox.']]},
+{id:'area',t:'Площади',e:'▱',x:[
+['Треугольник',`S = ½·a·h<br>S = ½·a·b·sin C`,'h — высота к стороне a.'],
+['Формула Герона',`S = √(p(p−a)(p−b)(p−c))<br>p = ${F('a + b + c','2')}`,'Когда известны только три стороны.'],
+['Через радиусы',`S = ${F('abc','4R')} = p·r`,'R — описанная, r — вписанная окружность.'],
+['Прямоугольник и квадрат',`S = a·b,  S = a²`,'Квадрат: S = d²/2, где d — диагональ.'],
+['Параллелограмм',`S = a·h = a·b·sin α`,''],
+['Ромб',`S = ${F('d₁·d₂','2')}`,'Подходит для любого четырёхугольника с перпендикулярными диагоналями.'],
+['Трапеция',`S = ${F('a + b','2')}·h`,'Средняя линия = (a + b)/2.'],
+['Четырёхугольник',`S = ½·d₁·d₂·sin φ`,'φ — угол между диагоналями.'],
+['Круг и сектор',`S = πr²,  C = 2πr<br>S<sub>сект</sub> = ½r²φ = ${F('πr²·n°','360°')}`,'φ в радианах.'],
+['Правильный n-угольник',`S = ½·P·r`,'P — периметр, r — апофема. Для треугольника: S = a²√3/4.']]},
+{id:'th',t:'Теоремы',e:'∴',x:[
+['Пифагор',`a² + b² = c²`,'Только для прямоугольного треугольника. Обратная теорема тоже верна.'],
+['Теорема синусов',`${F('a','sin A')} = ${F('b','sin B')} = ${F('c','sin C')} = 2R`,'Ищем сторону по противолежащему углу или радиус R.'],
+['Теорема косинусов',`c² = a² + b² − 2ab·cos C`,'При C = 90° превращается в теорему Пифагора.'],
+['Фалес',`${F('OA','AB')} = ${F('OC','CD')}`,'Параллельные прямые отсекают на сторонах угла пропорциональные отрезки.'],
+['Биссектриса',`${F('AD','DC')} = ${F('AB','BC')}`,'Биссектриса делит противоположную сторону пропорционально двум другим.'],
+['Длина медианы',`m<sub>a</sub> = ½·√(2b² + 2c² − a²)`,'Медианы пересекаются в точке, которая делит каждую в отношении 2 : 1.'],
+['Неравенство треугольника',`|a − b| < c < a + b`,'Из трёх отрезков можно сложить треугольник, если каждый меньше суммы двух других.'],
+['Подобие',`${F('S₁','S₂')} = k²,  ${F('V₁','V₂')} = k³`,'k — коэффициент подобия сторон.'],
+['Вписанный четырёхугольник',`∠A + ∠C = 180°<br>ac + bd = d₁·d₂`,'Вторая формула — теорема Птолемея.'],
+['Описанный четырёхугольник',`a + c = b + d`,'Суммы противоположных сторон равны.'],
+['Степень точки',`AM·MB = CM·MD<br>MT² = MA·MB`,'Две хорды, либо касательная и секущая из одной точки.']]},
+{id:'hack',t:'Лайфхаки',e:'✦',x:[
+['Формула Пика',`S = В + ${F('Г','2')} − 1`,'Многоугольник на клетчатой бумаге с вершинами в узлах. В — узлы внутри, Г — на границе.'],
+['Формула шнурования',`S = ½·|Σ(x<sub>i</sub>y<sub>i+1</sub> − x<sub>i+1</sub>y<sub>i</sub>)|`,'Площадь любого многоугольника по координатам вершин, обход по кругу.'],
+['Площадь по векторам',`S = ½·|x₁y₂ − x₂y₁|`,'Площадь треугольника, построенного на векторах от одной вершины.'],
+['Пифагоровы тройки',`3·4·5,  5·12·13,  8·15·17,  7·24·25`,'Умножение всех чисел тройки на k даёт новую тройку: 6·8·10, 9·12·15.'],
+['Треугольник 30°–60°–90°',`катет против 30° = ½c<br>стороны 1 : √3 : 2`,'Равнобедренный прямоугольный: 1 : 1 : √2.'],
+['Прямоугольный треугольник',`m<sub>c</sub> = R = ½c,  r = ${F('a + b − c','2')}`,'Медиана к гипотенузе равна половине гипотенузы.'],
+['Правильный треугольник',`h = ${F('a√3','2')},  R = 2r = ${F('a√3','3')}`,'Все центры совпадают, высота делится в отношении 2 : 1.'],
+['Равные высоты',`${F('S₁','S₂')} = ${F('a₁','a₂')}`,'Площади треугольников с общей высотой относятся как основания. Медиана делит треугольник на две равные по площади части.'],
+['Диагонали',`квадрат: a√2<br>куб: a√3<br>параллелепипед: √(a² + b² + c²)`,''],
+['Периметр и площадь',`P = const ⇒ S<sub>max</sub> у квадрата`,'Среди фигур с одним периметром наибольшая площадь у круга.'],
+['Формула Эйлера',`В − Р + Г = 2`,'Вершины, рёбра, грани выпуклого многогранника.'],
+['Центр масс',`G = (${F('x₁+x₂+x₃','3')}; ${F('y₁+y₂+y₃','3')})`,'Точка пересечения медиан — среднее координат вершин.']]},
+{id:'alg',t:'Алгебра',e:'∑',x:[
+['Формулы сокращённого умножения',`(a ± b)² = a² ± 2ab + b²<br>a² − b² = (a − b)(a + b)<br>a³ ± b³ = (a ± b)(a² ∓ ab + b²)`,'Ещё: (a + b)² − (a − b)² = 4ab.'],
+['Квадратное уравнение',`D = b² − 4ac<br>x = ${F('−b ± √D','2a')}`,'D > 0 — два корня, D = 0 — один, D < 0 — нет.'],
+['Теорема Виета',`x₁ + x₂ = −${F('b','a')},  x₁·x₂ = ${F('c','a')}`,'Часто корни подбираются в уме.'],
+['Арифметическая прогрессия',`a<sub>n</sub> = a₁ + (n−1)d<br>S<sub>n</sub> = ${F('a₁ + a<sub>n</sub>','2')}·n`,'1 + 2 + … + n = n(n+1)/2.'],
+['Геометрическая прогрессия',`b<sub>n</sub> = b₁qⁿ⁻¹<br>S<sub>n</sub> = ${F('b₁(qⁿ − 1)','q − 1')}`,'При |q| < 1 сумма бесконечной: b₁/(1 − q).'],
+['Степени',`aᵐ·aⁿ = aᵐ⁺ⁿ,  (aᵐ)ⁿ = aᵐⁿ<br>a⁰ = 1,  a⁻ⁿ = ${F('1','aⁿ')}`,''],
+['Логарифмы',`log<sub>a</sub>(bc) = log<sub>a</sub>b + log<sub>a</sub>c<br>log<sub>a</sub>b = ${F('ln b','ln a')}`,'Основное тождество: a^(log<sub>a</sub>b) = b.'],
+['Модуль',`|x| < a ⇔ −a < x < a<br>|x| > a ⇔ x < −a или x > a`,''],
+['Сочетания',`C<sub>n</sub><sup>k</sup> = ${F('n!','k!(n − k)!')}`,'Сколькими способами выбрать k предметов из n без учёта порядка.']]},
+{id:'xy',t:'Координаты',e:'⌖',x:[
+['Расстояние между точками',`d = √((x₂ − x₁)² + (y₂ − y₁)²)`,'Это теорема Пифагора на координатной плоскости.'],
+['Середина отрезка',`M = (${F('x₁ + x₂','2')}; ${F('y₁ + y₂','2')})`,''],
+['Деление в отношении λ',`x = ${F('x₁ + λx₂','1 + λ')}`,'То же для y.'],
+['Уравнение прямой',`y = kx + b,  k = ${F('y₂ − y₁','x₂ − x₁')}`,'Параллельны при равных k.'],
+['Расстояние от точки до прямой',`d = ${F('|Ax₀ + By₀ + C|','√(A² + B²)')}`,'Прямая Ax + By + C = 0.'],
+['Окружность',`(x − a)² + (y − b)² = r²`,'Центр (a; b), радиус r.']]},
+{id:'sp',t:'Объёмы',e:'◇',x:[
+['Призма и цилиндр',`V = S·h,  V<sub>цил</sub> = πr²h`,'Боковая поверхность цилиндра: 2πrh.'],
+['Пирамида и конус',`V = ⅓·S·h`,'Боковая поверхность конуса: πrl.'],
+['Шар',`V = ${F('4','3')}πr³,  S = 4πr²`,''],
+['Куб',`V = a³,  S = 6a²`,'']]}
+];
+let L={};try{L=JSON.parse(localStorage.getItem('ml')||'{}')}catch(e){}
+const $=s=>document.querySelector(s);
+const SN=[['Trigonometry','Trigonometriya'],['Angles','Burchaklar'],['Areas','Yuzalar'],['Theorems','Teoremalar'],['Tricks','Hiylalar'],['Algebra','Algebra'],['Coordinates','Koordinatalar'],['Volumes','Hajmlar']];
+const EN="Sine and cosine|Tangent and cotangent|Basic identity|Table of values|Double angle|Sum and difference|Tangent of a sum|Reduction formulas|Radians|Angle sum of a triangle|Angle sum of a polygon|Inscribed angle|Chord–tangent angle|Parallel lines|Angle between vectors|Angle between lines|Slope angle of a segment|Triangle|Heron’s formula|Via radii|Rectangle and square|Parallelogram|Rhombus|Trapezoid|Quadrilateral|Circle and sector|Regular polygon|Pythagorean theorem|Law of sines|Law of cosines|Thales’ theorem|Angle bisector|Median length|Triangle inequality|Similarity|Cyclic quadrilateral|Tangential quadrilateral|Power of a point|Pick’s theorem|Shoelace formula|Area via vectors|Pythagorean triples|30°–60°–90° triangle|Right triangle|Equilateral triangle|Equal heights|Diagonals|Perimeter vs area|Euler’s formula|Centroid|Special products|Quadratic equation|Vieta’s formulas|Arithmetic progression|Geometric progression|Exponents|Logarithms|Absolute value|Combinations|Distance between points|Midpoint|Dividing in ratio λ|Equation of a line|Point-to-line distance|Circle|Prism and cylinder|Pyramid and cone|Sphere|Cube".split('|'),UZ="Sinus va kosinus|Tangens va kotangens|Asosiy ayniyat|Qiymatlar jadvali|Ikkilangan burchak|Burchaklar yigʻindisi va ayirmasi|Yigʻindi tangensi|Keltirish formulalari|Radianlar|Uchburchak burchaklari yigʻindisi|Koʻpburchak burchaklari yigʻindisi|Ichki chizilgan burchak|Vatar va urinma orasidagi burchak|Parallel toʻgʻri chiziqlar|Vektorlar orasidagi burchak|Toʻgʻri chiziqlar orasidagi burchak|Kesmaning ogʻish burchagi|Uchburchak|Geron formulasi|Radiuslar orqali|Toʻgʻri toʻrtburchak va kvadrat|Parallelogramm|Romb|Trapetsiya|Toʻrtburchak|Doira va sektor|Toʻgʻri koʻpburchak|Pifagor teoremasi|Sinuslar teoremasi|Kosinuslar teoremasi|Fales teoremasi|Bissektrisa|Mediana uzunligi|Uchburchak tengsizligi|Oʻxshashlik|Ichki chizilgan toʻrtburchak|Tashqi chizilgan toʻrtburchak|Nuqta darajasi|Pik formulasi|Gauss (shoelace) formulasi|Vektorlar orqali yuza|Pifagor uchliklari|30°–60°–90° uchburchak|Toʻgʻri burchakli uchburchak|Teng tomonli uchburchak|Teng balandliklar|Diagonallar|Perimetr va yuza|Eyler formulasi|Ogʻirlik markazi|Qisqa koʻpaytirish formulalari|Kvadrat tenglama|Viyet teoremasi|Arifmetik progressiya|Geometrik progressiya|Darajalar|Logarifmlar|Modul|Guruhlashlar|Nuqtalar orasidagi masofa|Kesma oʻrtasi|Kesmani λ nisbatda boʻlish|Toʻgʻri chiziq tenglamasi|Nuqtadan chiziqqacha masofa|Aylana|Prizma va silindr|Piramida va konus|Shar|Kub".split('|'),E="a=3, b=4, c=5: sin α = 3/5, cos α = 4/5¦a=3, b=4: tg α = 3/4, ctg α = 4/3¦sin α = 3/5 ⇒ cos²α = 1 − 9/25 = 16/25¦sin 45°·cos 45° = (√2/2)² = 1/2¦sin 60° = 2·sin 30°·cos 30° = 2·½·√3/2 = √3/2¦sin 75° = sin(45° + 30°) = (√6 + √2)/4¦tg 75° = tg(45° + 30°) = (3 + √3)/(3 − √3) = 2 + √3¦sin 150° = sin(180° − 30°) = sin 30° = 1/2¦90° = π/2;  60° = π/3;  180° = π¦∠A = 50°, ∠B = 60° ⇒ ∠C = 70°¦n=6: 4·180° = 720°;  720°/6 = 120°¦⌣ = 80° ⇒ ∠ = 40°¦⌣ = 100° ⇒ ∠ = 50°¦α = 65° ⇒ β = 180° − 65° = 115°¦a=(1;0), b=(1;1): cos φ = 1/√2 ⇒ φ = 45°¦k₁=1, k₂=−1: k₁k₂ = −1 ⇒ φ = 90°¦(0;0)→(1;1): tg φ = 1 ⇒ φ = 45°¦a=10, h=6 ⇒ S = ½·10·6 = 30¦3, 4, 5: p=6 ⇒ S = √(6·3·2·1) = 6¦3, 4, 5: S=6, p=6 ⇒ r = 1;  R = 60/24 = 5/2¦4×6 ⇒ S = 24;  a=5 ⇒ S = 25¦a=8, h=5 ⇒ S = 40¦d₁=6, d₂=8 ⇒ S = 24¦a=3, b=7, h=4 ⇒ S = 5·4 = 20¦d₁=10, d₂=6, φ=30° ⇒ S = ½·10·6·½ = 15¦r=2 ⇒ S = 4π;  n=90° ⇒ S = π·4·90/360 = π¦n=6, a=2: P=12, r=√3 ⇒ S = ½·12·√3 = 6√3¦a=6, b=8 ⇒ c = √(36 + 64) = 10¦a=5, ∠A=30° ⇒ 2R = 5/½ = 10, R = 5¦a=3, b=5, C=60° ⇒ c² = 9 + 25 − 15 = 19¦OA=2, AB=4, OC=3 ⇒ CD = 6¦AB=6, BC=4, AC=10 ⇒ AD=6, DC=4¦a=6, b=c=5 ⇒ m = ½√(50 + 50 − 36) = 4¦3, 4, 8: 8 > 3 + 4 ⇒ ✗¦k=3 ⇒ S₂/S₁ = 9,  V₂/V₁ = 27¦∠A = 70° ⇒ ∠C = 110°¦a=5, c=7, b=6 ⇒ d=6  (5 + 7 = 6 + 6)¦MA=2, MB=8 ⇒ MT = √16 = 4¦В=3, Г=8 ⇒ S = 3 + 8/2 − 1 = 6¦(0;0), (4;0), (0;3) ⇒ S = ½·|12| = 6¦(3;0), (0;4) ⇒ S = ½·|3·4 − 0·0| = 6¦3·4·5 ×2 = 6·8·10:  36 + 64 = 100¦c=10 ⇒ 5 and 5√3¦a=6, b=8, c=10 ⇒ m = R = 5,  r = (6 + 8 − 10)/2 = 2¦a=6 ⇒ h = 3√3,  r = √3,  R = 2√3¦3 : 5 ⇒ S₁ : S₂ = 3 : 5¦a=2 ⇒ 2√2;  2√3;  1, 2, 3 ⇒ √14¦P=20: 5×5 = 25 > 4×6 = 24¦8 − 12 + 6 = 2¦(0;0), (6;0), (0;3) ⇒ G = (2; 1)¦101² = (100 + 1)² = 10201;  99·101 = 100² − 1 = 9999¦x² − 5x + 6 = 0: D = 1, x = (5 ± 1)/2 ⇒ 3; 2¦x² − 5x + 6 = 0: x₁ + x₂ = 5, x₁x₂ = 6 ⇒ 2; 3¦a₁=2, d=3: a₁₀ = 29, S₁₀ = (2 + 29)/2·10 = 155¦b₁=2, q=3: b₄ = 54, S₄ = 2·80/2 = 80¦2³·2⁴ = 2⁷ = 128;  2⁻³ = 1/8¦log₂8 + log₂4 = log₂32 = 5¦|x − 1| &lt; 2 ⇒ −1 &lt; x &lt; 3¦C(5,2) = 5!/(2!·3!) = 10¦(1;2), (4;6) ⇒ d = √(9 + 16) = 5¦(2;4), (6;10) ⇒ M = (4; 7)¦A(0;0), B(9;0), λ=1/2 ⇒ x = (9/2)/(3/2) = 3¦(0;1), (2;5): k = 2 ⇒ y = 2x + 1¦3x + 4y − 10 = 0, (0;0) ⇒ d = 10/5 = 2¦(x − 1)² + (y + 2)² = 9 ⇒ (1; −2), r = 3¦r=2, h=5 ⇒ V = π·4·5 = 20π¦S=9, h=4 ⇒ V = ⅓·9·4 = 12¦r=3 ⇒ V = 36π,  S = 36π¦a=3 ⇒ V = 27,  S = 54".split('¦');
+let g=0;S.forEach((s,i)=>{s.n={ru:s.t,en:SN[i][0],uz:SN[i][1]};s.x=s.x.map(c=>{const k=g++;return{n:{ru:c[0],en:EN[k],uz:UZ[k]},f:c[1],r:c[2],e:E[k]}})});
+S.push({id:'prob',e:'%',n:{ru:'Вероятность',en:'Probability',uz:'Ehtimollik'},x:[]});
+const A=(i,ru,f,e,en,uz)=>S[i].x.push({n:{ru,en,uz},f,r:'',e});
+A(0,'Чётность и периодичность',`sin(−α) = −sin α,  cos(−α) = cos α<br>sin(α + 360°) = sin α`,'sin(−30°) = −1/2;  cos 390° = cos 30° = √3/2','Parity and periodicity','Juftlik va davriylik');
+A(0,'Понижение степени',`sin²α = ${F('1 − cos 2α','2')}<br>cos²α = ${F('1 + cos 2α','2')}`,'cos²30° = (1 + cos 60°)/2 = 3/4','Power reduction','Darajani pasaytirish');
+A(0,'Простейшие уравнения',`sin x = a ⇒ x = (−1)ⁿ·arcsin a + πn<br>cos x = a ⇒ x = ±arccos a + 2πn`,'cos x = 1/2 ⇒ x = ±60° + 360°·n','Basic trig equations','Eng sodda tenglamalar');
+A(1,'Пересекающиеся хорды',`∠ = ½(⌣₁ + ⌣₂)`,'⌣₁ = 70°, ⌣₂ = 50° ⇒ ∠ = 60°','Intersecting chords','Kesishuvchi vatarlar');
+A(1,'Длина дуги',`l = r·φ = ${F('π r n°','180°')}`,'r=6, n=30° ⇒ l = π','Arc length','Yoy uzunligi');
+A(2,'Равносторонний треугольник',`S = ${F('a²√3','4')}`,'a=4 ⇒ S = 4√3','Equilateral triangle','Teng tomonli uchburchak');
+A(2,'Кольцо',`S = π(R² − r²)`,'R=5, r=3 ⇒ S = 16π','Annulus (ring)','Halqa');
+A(2,'Эллипс',`S = πab`,'a=5, b=2 ⇒ S = 10π','Ellipse','Ellips');
+A(3,'Средняя линия треугольника',`m = ½a,  m ∥ a`,'a=10 ⇒ m = 5','Midsegment of a triangle','Uchburchakning oʻrta chizigʻi');
+A(3,'Вид треугольника по сторонам',`c² &lt; a² + b² — остроугольный<br>c² = a² + b² — прямоугольный<br>c² > a² + b² — тупоугольный`,'4, 5, 6: 36 &lt; 16 + 25 = 41 ⇒ c² &lt; a² + b²','Triangle type by sides','Tomonlari boʻyicha uchburchak turi');
+A(4,'Число диагоналей',`d = ${F('n(n − 3)','2')}`,'n=6 ⇒ 6·3/2 = 9','Number of diagonals','Diagonallar soni');
+A(4,'Сумма нечётных чисел',`1 + 3 + 5 + … + (2n − 1) = n²`,'1 + 3 + 5 + 7 = 16 = 4²','Sum of odd numbers','Toq sonlar yigʻindisi');
+A(4,'Проценты наоборот',`${F('x','100')}·y = ${F('y','100')}·x`,'8·50/100 = 50·8/100 = 4','Percent swap','Foizni almashtirish');
+A(5,'Неравенство о средних',`${F('a + b','2')} ≥ √(ab)`,'a=2, b=8: 5 ≥ 4','AM–GM inequality','Oʻrtalar tengsizligi');
+A(5,'Вершина параболы',`x₀ = −${F('b','2a')},  y₀ = y(x₀)`,'y = x² − 4x + 1: x₀ = 2, y₀ = −3','Vertex of a parabola','Parabola uchi');
+A(5,'Сложные проценты',`A = P·(1 + ${F('r','100')})ⁿ`,'P=1000, r=10, n=2 ⇒ A = 1000·(11/10)² = 1210','Compound interest','Murakkab foiz');
+A(6,'Скалярное произведение',`a·b = x₁x₂ + y₁y₂ = |a||b|cos φ`,'(2;3)·(4;−1) = 8 − 3 = 5','Dot product','Skalyar koʻpaytma');
+A(6,'Длина вектора',`|a| = √(x² + y²)`,'a = (3;4) ⇒ |a| = 5','Vector length','Vektor uzunligi');
+A(6,'Прямая через две точки',`${F('x − x₁','x₂ − x₁')} = ${F('y − y₁','y₂ − y₁')}`,'(0;1), (2;5): x/2 = (y − 1)/4 ⇒ y = 2x + 1','Line through two points','Ikki nuqtadan oʻtuvchi toʻgʻri chiziq');
+A(7,'Поверхность: цилиндр (S₁), конус (S₂)',`S₁ = 2πr(r + h)<br>S₂ = πr(r + l)`,'r=3, h=4, l=5: S₁ = 42π, S₂ = 24π','Surface: cylinder (S₁), cone (S₂)','Sirt: silindr (S₁), konus (S₂)');
+A(7,'Шар вокруг куба',`R = ${F('a√3','2')}`,'a=2 ⇒ R = √3','Sphere around a cube','Kubga tashqi chizilgan shar');
+A(8,'Классическая вероятность',`P(A) = ${F('m','n')}`,'m=3, n=6 ⇒ P = 1/2','Classical probability','Klassik ehtimollik');
+A(8,'Противоположное событие',`P(Ā) = 1 − P(A)`,'P(A) = 1/4 ⇒ P(Ā) = 3/4','Complementary event','Qarama-qarshi hodisa');
+A(8,'Независимые события',`P(A∩B) = P(A)·P(B)`,'1/2 · 1/6 = 1/12','Independent events','Bogʻliq boʻlmagan hodisalar');
+A(8,'Перестановки и размещения',`P<sub>n</sub> = n!,  A<sub>n</sub><sup>k</sup> = ${F('n!','(n − k)!')}`,'P₄ = 24;  A₅² = 5·4 = 20','Permutations and arrangements','Oʻrin almashtirish va oʻrinlashtirish');
+const N=S.reduce((n,s)=>n+s.x.length,0);
+const I={
+ru:{h1:'Формулы, которые <mark>решают</mark> задачи за минуту',p:'Тригонометрия, углы, площади, теоремы и приёмы вроде формулы Пика. К каждой формуле есть пример. Отмечайте звездой то, что выучили.',ph:'Поиск: синус, площадь, Пик…',lab:'Лаборатория',uc:'Единичная окружность',tr:'Треугольник по координатам',ex:'Пример',rad:'рад',no:'Ничего не найдено. Попробуйте другое слово.',ft:'Совет: сначала поймите, откуда формула берётся, а потом заучивайте. Тогда она не забывается.',ttl:'Формулы и лайфхаки: математика и геометрия',th:'Тема',fav:'Отметить как выученное',pr:(d,n)=>`Выучено ${d} из ${n} формул`},
+en:{h1:'Formulas that <mark>solve</mark> problems in a minute',p:'Trigonometry, angles, areas, theorems and tricks like Pick’s theorem. Every formula comes with an example. Star the ones you have learned.',ph:'Search: sine, area, Pick…',lab:'Lab',uc:'Unit circle',tr:'Triangle from coordinates',ex:'Example',rad:'rad',no:'Nothing found. Try another word.',ft:'Tip: understand where a formula comes from first, then memorize it. It will stick.',ttl:'Formulas and tricks: math and geometry',th:'Theme',fav:'Mark as learned',pr:(d,n)=>`${d} of ${n} formulas learned`},
+uz:{h1:'Masalani bir daqiqada <mark>yechadigan</mark> formulalar',p:'Trigonometriya, burchaklar, yuzalar, teoremalar va Pik formulasi kabi usullar. Har bir formulada misol bor. Oʻrganganlaringizni yulduzcha bilan belgilang.',ph:'Qidiruv: sinus, yuza, Pik…',lab:'Laboratoriya',uc:'Birlik aylana',tr:'Koordinatalar boʻyicha uchburchak',ex:'Misol',rad:'rad',no:'Hech narsa topilmadi. Boshqa soʻz kiriting.',ft:'Maslahat: avval formula qayerdan kelishini tushuning, keyin yodlang. Shunda esdan chiqmaydi.',ttl:'Formulalar va usullar: matematika va geometriya',th:'Mavzu',fav:'Oʻrganilgan deb belgilash',pr:(d,n)=>`${n} ta formuladan ${d} tasi oʻrganildi`}};
+const C=[['В − Р + Г','V − E + F'],['<i>Г</i>','<i>B</i>'],['В + ','I + '],['В=','I='],['Г=','B=']];
+const W={en:[...C,['вписанный','inscribed'],['центрального','central'],['дуги','arc'],['накрест лежащие равны','alternate angles equal'],['односторонние','co-interior'],['сект','sec'],['катет против 30°','leg opposite 30°'],['стороны','sides'],['у квадрата','for the square'],['квадрат','square'],['параллелепипед','cuboid'],['куб','cube'],['или','or'],['цил','cyl'],['остроугольный','acute'],['прямоугольный','right'],['тупоугольный','obtuse']],
+uz:[...C,['вписанный','ichki'],['центрального','markaziy'],['дуги','yoy'],['накрест лежащие равны','ichki almashinuvchi burchaklar teng'],['односторонние','bir tomonli'],['сект','sek'],['катет против 30°','30° qarshisidagi katet'],['стороны','tomonlar'],['у квадрата','kvadratda'],['квадрат','kvadrat'],['параллелепипед','parallelepiped'],['куб','kub'],['или','yoki'],['цил','sil'],['остроугольный','oʻtkir burchakli'],['прямоугольный','toʻgʻri burchakli'],['тупоугольный','oʻtmas burchakli']]};
+const tr=(s,l)=>(W[l]||[]).reduce((a,[f,t])=>a.split(f).join(t),s);
+let lang='ru';try{lang=localStorage.getItem('mlang')||(['en','uz'].includes(navigator.language.slice(0,2))?navigator.language.slice(0,2):'ru')}catch(e){}
+const prog=()=>{const d=Object.values(L).filter(Boolean).length;$('#pb').style.width=d/N*100+'%';$('#pt').textContent=I[lang].pr(d,N)};
+let first=true;
+function draw(){const l=lang,d=I[l];
+$('#app').innerHTML=S.map(s=>`<section id="${s.id}" data-s><h2><span>${s.e}</span>${s.n[l]}</h2><div class="grid">${s.x.map((c,i)=>{const k=s.id+i;return `<article class="card reveal${first?'':' in'}${L[k]?' on':''}" data-k="${k}" data-t="${Object.values(c.n).join(' ')}" style="--d:${(i%3)*.08}s"><button class="fav" title="${d.fav}" aria-label="${d.fav}">★</button><h3>${c.n[l]}</h3><div class="f">${tr(c.f,l)}</div><p>${l=='ru'?c.r:''}</p><div class="ex"><b>${d.ex}</b>${tr(c.e,l)}</div></article>`}).join('')}</div></section>`).join('');
+document.querySelectorAll('#nav a').forEach(a=>a.remove());
+$('#nav').insertAdjacentHTML('afterbegin',[['lab',d.lab],...S.map(s=>[s.id,s.n[l]])].map(a=>`<a href="#${a[0]}">${a[1]}</a>`).join(''));
+document.querySelectorAll('#app .reveal').forEach(el=>io.observe(el));document.querySelectorAll('#app [data-s]').forEach(s=>so.observe(s));first=false;prog();$('#q').dispatchEvent(new Event('input'))}
+function setLang(l){lang=l;try{localStorage.setItem('mlang',l)}catch(e){}const d=I[l];document.documentElement.lang=l;document.title=d.ttl;
+$('h1').innerHTML=d.h1;$('.hero p').textContent=d.p;$('#q').placeholder=d.ph;$('#lab h2').innerHTML='<span>⌬</span>'+d.lab;$('.panel h3').textContent=d.uc;$('#co h3').textContent=d.tr;$('footer .wrap').textContent=d.ft;$('#none').textContent=d.no;$('#th').title=d.th;
+document.querySelectorAll('#lg [data-l]').forEach(b=>b.classList.toggle('on',b.dataset.l===l));draw();uc()}
+$('#app').addEventListener('click',e=>{const b=e.target.closest('.fav');if(!b)return;const c=b.parentNode,k=c.dataset.k;L[k]=!L[k];c.classList.toggle('on',L[k]);try{localStorage.setItem('ml',JSON.stringify(L))}catch(x){}prog()});
+$('#q').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();let any=false;document.querySelectorAll('#app section').forEach(s=>{let v=0;s.querySelectorAll('.card').forEach(c=>{const m=!q||(c.textContent+c.dataset.t).toLowerCase().includes(q);c.hidden=!m;if(m){v++;c.classList.add('in')}});s.hidden=!v;if(v)any=true});$('#none').style.display=any?'none':'block'});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-30% 0px -60% 0px'});
+document.querySelectorAll('[data-s]').forEach(s=>so.observe(s));
+const fm=v=>String(Math.abs(v)<1e-9?0:+v.toFixed(3)).replace('.',',');
+function uc(){const d=+$('#ang').value,a=d*Math.PI/180,x=Math.cos(a),y=Math.sin(a),px=120+95*x,py=120-95*y;
+$('#pp').setAttribute('cx',px);$('#pp').setAttribute('cy',py);$('#rd').setAttribute('x2',px);$('#rd').setAttribute('y2',py);
+for(const [k,v] of [['x1',px],['x2',px],['y1',py],['y2',120]])$('#vs').setAttribute(k,v);
+$('#arc').setAttribute('d',d<1?'':`M ${120+28} 120 A 28 28 0 ${d>180?1:0} 0 ${120+28*x} ${120-28*y}`);
+const tg=Math.abs(x)<1e-9?'—':fm(y/x),ct=Math.abs(y)<1e-9?'—':fm(x/y);
+$('#uv').innerHTML=`<span>α = <b>${d}°</b></span><span>${fm(a)} ${I[lang].rad}</span><span>sin α = <b>${fm(y)}</b></span><span>cos α = <b>${fm(x)}</b></span><span>tg α = <b>${tg}</b></span><span>ctg α = <b>${ct}</b></span>`}
+$('#ang').addEventListener('input',uc);document.querySelectorAll('.q button').forEach(b=>b.onclick=()=>{$('#ang').value=b.dataset.a;uc()});uc();
+function tri(){const [ax,ay,bx,by,cx,cy]=[...document.querySelectorAll('#co input')].map(e=>+e.value||0),d=(a,b,c,e)=>Math.hypot(c-a,e-b);
+const g=(px,py,qx,qy,rx,ry)=>{const u=[qx-px,qy-py],v=[rx-px,ry-py],m=Math.hypot(...u)*Math.hypot(...v);return m?Math.acos(Math.max(-1,Math.min(1,(u[0]*v[0]+u[1]*v[1])/m)))*180/Math.PI:0};
+const ab=d(ax,ay,bx,by),bc=d(bx,by,cx,cy),ca=d(cx,cy,ax,ay),s=Math.abs(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by))/2;
+$('#cv').innerHTML=`<span>AB = <b>${fm(ab)}</b></span><span>BC = <b>${fm(bc)}</b></span><span>CA = <b>${fm(ca)}</b></span><span>P = <b>${fm(ab+bc+ca)}</b></span><span>∠A = <b>${fm(g(ax,ay,bx,by,cx,cy))}°</b></span><span>∠B = <b>${fm(g(bx,by,ax,ay,cx,cy))}°</b></span><span>∠C = <b>${fm(g(cx,cy,ax,ay,bx,by))}°</b></span><span>S = <b>${fm(s)}</b></span>`;
+const X=[ax,bx,cx],Y=[ay,by,cy],mx=Math.min(...X),my=Math.min(...Y),sc=Math.min(190/(Math.max(...X)-mx||1),110/(Math.max(...Y)-my||1)),P=X.map((x,i)=>[20+(x-mx)*sc,130-(Y[i]-my)*sc]);
+$('#tsv').innerHTML=`<polygon points="${P.join(' ')}" fill="var(--hl)" fill-opacity=".35" stroke="var(--ac)" stroke-width="2.5" style="transition:all .4s"/>`+P.map((p,i)=>`<text x="${p[0]+6}" y="${p[1]-6}" fill="var(--tx)" font-size="14" font-style="italic">${'ABC'[i]}</text>`).join('')}
+document.querySelectorAll('#co input').forEach(i=>i.addEventListener('input',tri));tri();
+const R=document.documentElement;$('#th').onclick=()=>{const dk=R.dataset.theme?R.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;R.dataset.theme=dk?'light':'dark'};
+document.querySelectorAll('#lg [data-l]').forEach(b=>b.onclick=()=>setLang(b.dataset.l));setLang(lang);
+</script>
+</body>
+</html>
