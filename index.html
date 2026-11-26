@@ -68,6 +68,17 @@ td,th{border:1px solid var(--bd);padding:3px 6px;text-align:center}th{background
 footer{padding:50px 0 40px;color:var(--mut);font-size:14px}
 @media(max-width:760px){.hero,.lab{grid-template-columns:1fr}.hero{padding-top:32px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.tri .ln,.tri .ar{stroke-dashoffset:0}.tri text{opacity:1}h1 mark{background-size:100% 100%}}
+.fig{margin-top:10px;padding:6px;border-radius:6px;background:var(--bg)}
+.fg{width:100%;max-width:260px;height:auto;display:block;margin:0 auto}
+.fg .l{fill:none;stroke:var(--ac);stroke-width:2;stroke-linejoin:round}
+.fg .h{fill:var(--hl);fill-opacity:.3;stroke:var(--ac);stroke-width:2;stroke-linejoin:round}
+.fg .g{fill:var(--ok);fill-opacity:.25;stroke:var(--ok);stroke-width:1.5}
+.fg .d{fill:none;stroke:var(--mut);stroke-width:1.3;stroke-dasharray:4 3}
+.fg .o{fill:none;stroke:var(--mut);stroke-width:1.5}
+.fg .k{fill:none;stroke:var(--ok);stroke-width:3}
+.fg .m{fill:none;stroke:var(--hl);stroke-width:3}
+.fg text{fill:var(--tx);font:italic 500 13px "STIX Two Text","Cambria Math",serif}
+.fg .c{text-anchor:middle}
 </style>
 </head>
 <body>
@@ -234,9 +245,67 @@ uz:[...C,['вписанный','ichki'],['центрального','markaziy'],
 const tr=(s,l)=>(W[l]||[]).reduce((a,[f,t])=>a.split(f).join(t),s);
 let lang='ru';try{lang=localStorage.getItem('mlang')||(['en','uz'].includes(navigator.language.slice(0,2))?navigator.language.slice(0,2):'ru')}catch(e){}
 const prog=()=>{const d=Object.values(L).filter(Boolean).length;$('#pb').style.width=d/N*100+'%';$('#pt').textContent=I[lang].pr(d,N)};
+const FIG=(()=>{
+const D=Math.PI/180,pt=(a,r=52,x=110,y=65)=>[+(x+r*Math.cos(a*D)).toFixed(1),+(y-r*Math.sin(a*D)).toFixed(1)];
+const sv=(b,h=130)=>`<svg class="fg" viewBox="0 0 220 ${h}" aria-hidden="true">${b}</svg>`;
+const T=(x,y,s,c='')=>`<text x="${x}" y="${y}" class="${c}">${s}</text>`;
+const P=(d,c='l')=>`<path class="${c}" d="${d}"/>`;
+const Ln=(a,b,c='l')=>P(`M${a} L${b}`,c);
+const pg=(p,c='h')=>P(`M${p.join(' L')} Z`,c);
+const Ci=(x,y,r,c='o')=>`<circle class="${c}" cx="${x}" cy="${y}" r="${r}"/>`;
+const Dt=p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.6" fill="var(--tx)"/>`;
+const RM=(x,y,u,v)=>P(`M${x+9*u} ${y}L${x+9*u} ${y+9*v}L${x} ${y+9*v}`,'d');
+const Ar=(a,b,r,x,y,c='k')=>P(`M${pt(a,r,x,y)}A${r} ${r} 0 ${(b-a+360)%360>180?1:0} 0 ${pt(b,r,x,y)}`,c);
+const AA=(p,q,r,rad=18,c='k')=>{let a=(Math.atan2(p[1]-q[1],q[0]-p[0])/D+360)%360,b=(Math.atan2(p[1]-r[1],r[0]-p[0])/D+360)%360;if((b-a+360)%360>180)[a,b]=[b,a];return Ar(a,b,rad,p[0],p[1],c)};
+const X=(a,b,c,d)=>{const r=[b[0]-a[0],b[1]-a[1]],s=[d[0]-c[0],d[1]-c[1]],t=((c[0]-a[0])*s[1]-(c[1]-a[1])*s[0])/(r[0]*s[1]-r[1]*s[0]);return[+(a[0]+t*r[0]).toFixed(1),+(a[1]+t*r[1]).toFixed(1)]};
+const md=(p,q)=>[(p[0]+q[0])/2,(p[1]+q[1])/2];
+const lab=(p,s,k)=>{const dx=p[0]-110,dy=p[1]-65,l=Math.hypot(dx,dy)||1;return T(p[0]+dx/l*k,p[1]+dy/l*k+4,s,'c')};
+const TRI=sv(pg([[30,108],[160,108],[160,28]])+RM(160,108,-1,-1)+AA([30,108],[160,108],[160,28],30)+T(95,124,'b','c')+T(168,72,'a')+T(80,62,'c')+T(68,102,'α'));
+const p40=pt(40),UC=sv(Ci(110,65,52)+Ln([50,65],[170,65],'d')+Ln([110,10],[110,120],'d')+Ln([110,65],p40)+Ln(p40,[p40[0],65],'k')+Ln([110,65],[p40[0],65],'m')+Dt(p40)+Ar(0,40,16,110,65,'l')+T(128,60,'α')+T(p40[0]+5,52,'sin α')+T(122,80,'cos α')+T(112,42,'1'));
+const q35=pt(35),q145=pt(145),RED=sv(Ci(110,65,52)+Ln([50,65],[170,65],'d')+Ln([110,65],q35)+Ln([110,65],q145)+Ln(q35,[q35[0],65],'k')+Ln(q145,[q145[0],65],'k')+Ar(0,35,14,110,65,'m')+Ar(145,180,14,110,65,'m')+T(128,58,'α')+T(62,82,'180°−α'));
+const RAD=sv(Ci(110,65,52)+Ln([110,65],pt(0))+Ln([110,65],pt(57.3))+Ar(0,57.3,52,110,65,'k')+Ar(0,57.3,16,110,65,'m')+T(138,79,'r')+T(112,40,'r')+T(168,40,'l = r')+T(134,60,'φ')+Dt([110,65]));
+const ANG0=sv(pg([[25,108],[195,108],[120,22]])+T(42,102,'α')+T(166,102,'β')+T(114,54,'γ'));
+const V6=[0,1,2,3,4,5].map(i=>pt(90+60*i,50,110,66)),ANG1=sv(pg(V6)+Ln(V6[0],V6[2],'d')+Ln(V6[0],V6[3],'d')+Ln(V6[0],V6[4],'d'));
+const iA=pt(200),iB=pt(340),iC=pt(90),ANG2=sv(Ci(110,65,52)+Ln(iC,iA)+Ln(iC,iB)+Ln([110,65],iA,'d')+Ln([110,65],iB,'d')+AA(iC,iA,iB,22,'k')+AA([110,65],iA,iB,22,'m')+Dt([110,65])+T(46,90,'A')+T(166,90,'B')+T(106,9,'C')+T(106,50,'φ')+T(100,84,'2φ'));
+const tA=pt(270,50,110,60),tB=pt(20,50,110,60),ANG3=sv(Ci(110,60,50)+Ln([30,110],[190,110])+Ln(tA,tB)+Ar(270,20,50,110,60,'k')+AA(tA,[190,110],tB,22,'m')+Dt(tA)+T(100,126,'A')+T(162,40,'B')+T(138,104,'φ')+T(166,92,'2φ'));
+const ANG4=sv(Ln([20,45],[200,45])+Ln([20,90],[200,90])+Ln([60,115],[150,20])+T(106,58,'α')+T(96,84,'α')+T(134,58,'β'));
+const chords=a=>{const A=pt(190),C=pt(50),B=pt(340),D=pt(120),M=X(A,C,B,D);return sv(Ci(110,65,52)+Ln(A,C)+Ln(B,D)+(a?Ar(50,120,52,110,65,'k')+Ar(190,340,52,110,65,'k'):'')+Dt(M)+T(A[0]-14,A[1]+4,'A')+T(C[0]+6,C[1]-2,'C')+T(B[0]+6,B[1]+8,'B')+T(D[0]-12,D[1]-4,'D')+(a?T(M[0]-4,M[1]-8,'φ'):T(M[0]+4,M[1]+14,'M')))};
+const AR0=sv(pg([[28,108],[192,108],[125,24]])+Ln([125,24],[125,108],'d')+RM(125,108,1,-1)+T(110,124,'a','c')+T(131,70,'h'));
+const gV=[90,210,330].map(a=>pt(a,40.4,110,75)),AR2=sv(Ci(110,75,40.4)+Ci(110,75,20.2)+pg(gV)+Ln([110,75],gV[1],'k')+Ln([110,75],[110,95.2],'k')+Dt([110,75])+T(88,82,'R')+T(114,92,'r'));
+const AR4=sv(pg([[30,105],[140,105],[190,30],[80,30]])+Ln([80,30],[80,105],'d')+RM(80,105,1,-1)+T(85,122,'a','c')+T(172,74,'b')+T(86,72,'h')+T(48,100,'α'));
+const AR5=sv(pg([[110,12],[180,65],[110,118],[40,65]])+Ln([110,12],[110,118],'d')+Ln([40,65],[180,65],'d')+RM(110,65,1,-1)+T(114,38,'d₁')+T(146,60,'d₂'));
+const AR6=sv(pg([[65,35],[155,35],[195,105],[25,105]])+Ln([65,35],[65,105],'d')+RM(65,105,1,-1)+Ln([45,70],[175,70],'k')+T(110,28,'a','c')+T(110,122,'b','c')+T(71,92,'h')+T(130,64,'m'));
+const AR8=sv(Ci(110,65,52)+P(`M110 65L162 65A52 52 0 0 0 ${pt(60)} Z`,'h')+Ar(0,60,18,110,65,'m')+T(136,79,'r')+T(132,56,'φ'));
+const AR11=sv(`<path class="h" fill-rule="evenodd" d="M58 65a52 52 0 1 0 104 0a52 52 0 1 0-104 0M80 65a30 30 0 1 0 60 0a30 30 0 1 0-60 0"/>`+Ln([110,65],[162,65],'k')+Ln([110,65],pt(135,30),'k')+T(140,60,'R')+T(92,54,'r')+Dt([110,65]));
+const TH0=sv(pg([[64,64],[100,64],[100,100],[64,100]],'g')+pg([[100,100],[148,100],[148,148],[100,148]],'g')+pg([[100,64],[148,100],[184,52],[136,16]])+pg([[100,100],[100,64],[148,100]],'l')+RM(100,100,1,-1)+T(82,86,'a²','c')+T(124,128,'b²','c')+T(142,56,'c²','c'),150);
+const sA=pt(215),sB=pt(325),sC=pt(80),TH1=sv(Ci(110,65,52)+pg([sA,sB,sC])+Ln([110,65],sA,'d')+Dt([110,65])+lab(sA,'A',12)+lab(sB,'B',12)+lab(sC,'C',12)+lab(md(sB,sC),'a',-12)+lab(md(sC,sA),'b',-12)+lab(md(sA,sB),'c',-12)+T((110+sA[0])/2+2,(65+sA[1])/2-4,'R'));
+const TH2=sv(pg([[28,108],[192,108],[105,25]])+AA([105,25],[28,108],[192,108],22)+T(100,62,'C')+T(160,62,'a')+T(50,62,'b')+T(110,124,'c','c'));
+const TH3=sv(Ln([30,105],[200,105])+Ln([30,105],[190,20])+Ln([72.5,105],[70,83.8],'k')+Ln([132,105],[126,54],'k')+T(14,110,'O')+T(68,121,'A')+T(128,121,'B')+T(50,82,'C')+T(106,52,'D'));
+const bA=[28,108],bB=[75,25],bC=[192,108],ab=Math.hypot(47,83),bc=Math.hypot(117,83),bD=[28+164*ab/(ab+bc),108],TH4=sv(pg([bA,bB,bC])+Ln(bB,bD,'k')+T(14,112,'A')+T(70,16,'B')+T(196,112,'C')+T(bD[0]-4,124,'D')+T(64,52,'α')+T(84,52,'α'));
+const MED=sv(pg([[110,22],[28,108],[192,108]])+Ln([110,22],[110,108],'k')+Ln([28,108],[151,65],'d')+Ln([192,108],[69,65],'d')+Dt([110,79.3])+T(106,14,'A')+T(12,112,'B')+T(196,112,'C')+T(116,76,'G'));
+const TH11=sv(pg([[110,22],[28,108],[192,108]])+Ln([69,65],[151,65],'k')+T(106,14,'A')+T(110,124,'a','c')+T(106,59,'m'));
+const pk=(()=>{const V=[[1,0],[5,0],[6,2],[3,4],[0,3]],xy=p=>[30+26*p[0],118-26*p[1]];
+const on=(p,a,b)=>(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0])==0&&p[0]>=Math.min(a[0],b[0])&&p[0]<=Math.max(a[0],b[0])&&p[1]>=Math.min(a[1],b[1])&&p[1]<=Math.max(a[1],b[1]);
+const ins=p=>{let c=false;for(let i=0,j=V.length-1;i<V.length;j=i++){const a=V[i],b=V[j];if((a[1]>p[1])!=(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])c=!c}return c};
+let d='';for(let x=0;x<=6;x++)for(let y=0;y<=4;y++){const q=[x,y],e=xy(q),bd=V.some((a,i)=>on(q,a,V[(i+1)%V.length]));d+=Ci(e[0],e[1],bd||ins(q)?4:1.6,'').replace('class=""',`fill="${bd?'var(--ac)':ins(q)?'var(--ok)':'var(--mut)'}"`)}
+return sv(pg(V.map(xy))+d)})();
+const H4=sv(pg([[30,108],[151,108],[151,38]])+RM(151,108,-1,-1)+T(52,103,'30°')+T(132,66,'60°')+T(90,124,'√3','c')+T(160,76,'1')+T(80,64,'2'));
+const hO=pt(180),hB=pt(0),hC=pt(110),H5=sv(Ci(110,65,52)+pg([hO,hB,hC])+Ln([110,65],hC,'k')+AA(hC,hO,hB,12,'m')+Dt([110,65])+T(40,70,'A')+T(168,70,'B')+T(96,12,'C')+T(110,80,'c','c')+T(106,42,'R'));
+const H6=sv(Ci(110,74.2,46.2)+Ci(110,74.2,23.1)+pg([[110,28],[70,97.3],[150,97.3]])+Ln([110,28],[110,97.3],'d')+Ln([110,74.2],[70,97.3],'d')+Ln([110,74.2],[110,97.3],'k')+Dt([110,74.2])+T(116,50,'h')+T(86,82,'R')+T(114,92,'r'));
+const cube=g=>sv(pg([[40,50],[110,50],[110,120],[40,120]])+pg([[40,50],[80,20],[150,20],[110,50]])+pg([[110,50],[150,20],[150,90],[110,120]])+Ln([80,20],[80,90],'d')+Ln([80,90],[150,90],'d')+Ln([80,90],[40,120],'d')+(g?Ln([40,120],[150,20],'k')+T(98,86,'a√3'):'')+T(28,88,'a'));
+const par=(m,pts=[])=>{let a=[];for(let x=30;x<=190;x+=8)a.push([x,+(70+.016*(2500-(x-110)**2)).toFixed(1)]);return a};
+const PB=Ln([20,70],[205,70],'d')+Ln([110,10],[110,125],'d')+P(`M${par().join(' L')}`);
+const ALG1=sv(PB+Dt([60,70])+Dt([160,70])+T(50,86,'x₁')+T(158,86,'x₂'));
+const ALG10=sv(PB+Dt([110,110])+Ln([110,110],[20,110],'d')+T(24,106,'y₀')+T(116,64,'x₀'));
+const XY0=sv(Ln([20,110],[205,110],'d')+Ln([20,10],[20,110],'d')+Ln([50,95],[170,35])+Ln([50,95],[170,95],'d')+Ln([170,95],[170,35],'d')+RM(170,95,-1,-1)+Dt([50,95])+Dt([170,35])+T(98,110,'x₂ − x₁')+T(176,68,'y₂ − y₁')+T(94,56,'d'));
+const XY5=sv(Ln([20,112],[205,112],'d')+Ln([20,10],[20,112],'d')+Ci(110,60,45)+Ln([110,60],[110,112],'d')+Ln([110,60],[20,60],'d')+Ln([110,60],pt(30,45,110,60),'k')+Dt([110,60])+T(106,126,'a')+T(6,64,'b')+T(138,42,'r'));
+const SP0=sv(`<ellipse class="h" cx="110" cy="28" rx="50" ry="14"/>`+Ln([60,28],[60,98])+Ln([160,28],[160,98])+P('M60 98A50 14 0 0 0 160 98')+P('M60 98A50 14 0 0 1 160 98','d')+Ln([110,28],[160,28],'k')+Ln([172,28],[172,98],'d')+T(130,24,'r')+T(178,66,'h')+T(106,102,'S','c'));
+const SP1=sv(Ln([110,12],[55,100])+Ln([110,12],[165,100])+P('M55 100A55 14 0 0 0 165 100')+P('M55 100A55 14 0 0 1 165 100','d')+Ln([110,12],[110,100],'d')+Ln([110,100],[165,100],'k')+T(150,50,'l')+T(114,56,'h')+T(134,96,'r'));
+const SP2=sv(Ci(110,65,52,'h')+P('M58 65A52 16 0 0 0 162 65')+P('M58 65A52 16 0 0 1 162 65','d')+Ln([110,65],pt(40),'k')+Dt([110,65])+T(138,50,'r'));
+return{trig0:TRI,trig1:TRI,trig2:UC,trig7:RED,trig8:RAD,ang0:ANG0,ang1:ANG1,ang2:ANG2,ang3:ANG3,ang4:ANG4,ang8:chords(1),area0:AR0,area2:AR2,area4:AR4,area5:AR5,area6:AR6,area8:AR8,area11:AR11,th0:TH0,th1:TH1,th2:TH2,th3:TH3,th4:TH4,th5:MED,th10:chords(0),th11:TH11,hack0:pk,hack4:H4,hack5:H5,hack6:H6,hack8:cube(1),hack11:MED,alg1:ALG1,alg10:ALG10,xy0:XY0,xy5:XY5,sp0:SP0,sp1:SP1,sp2:SP2,sp3:cube(0)}})();
 let first=true;
 function draw(){const l=lang,d=I[l];
-$('#app').innerHTML=S.map(s=>`<section id="${s.id}" data-s><h2><span>${s.e}</span>${s.n[l]}</h2><div class="grid">${s.x.map((c,i)=>{const k=s.id+i;return `<article class="card reveal${first?'':' in'}${L[k]?' on':''}" data-k="${k}" data-t="${Object.values(c.n).join(' ')}" style="--d:${(i%3)*.08}s"><button class="fav" title="${d.fav}" aria-label="${d.fav}">★</button><h3>${c.n[l]}</h3><div class="f">${tr(c.f,l)}</div><p>${c.i[l]}</p><div class="ex"><b>${d.ex}</b>${tr(c.e,l)}</div><details class="more"><summary>${d.more}</summary><div>${c.h[l]}</div></details></article>`}).join('')}</div></section>`).join('');
+$('#app').innerHTML=S.map(s=>`<section id="${s.id}" data-s><h2><span>${s.e}</span>${s.n[l]}</h2><div class="grid">${s.x.map((c,i)=>{const k=s.id+i;return `<article class="card reveal${first?'':' in'}${L[k]?' on':''}" data-k="${k}" data-t="${Object.values(c.n).join(' ')}" style="--d:${(i%3)*.08}s"><button class="fav" title="${d.fav}" aria-label="${d.fav}">★</button><h3>${c.n[l]}</h3><div class="f">${tr(c.f,l)}</div>${FIG[k]?'<div class="fig">'+FIG[k]+'</div>':''}<p>${c.i[l]}</p><div class="ex"><b>${d.ex}</b>${tr(c.e,l)}</div><details class="more"><summary>${d.more}</summary><div>${c.h[l]}</div></details></article>`}).join('')}</div></section>`).join('');
 document.querySelectorAll('#nav a').forEach(a=>a.remove());
 $('#nav').insertAdjacentHTML('afterbegin',[['lab',d.lab],...S.map(s=>[s.id,s.n[l]])].map(a=>`<a href="#${a[0]}">${a[1]}</a>`).join(''));
 document.querySelectorAll('#app .reveal').forEach(el=>io.observe(el));document.querySelectorAll('#app [data-s]').forEach(s=>so.observe(s));first=false;prog();$('#q').dispatchEvent(new Event('input'))}
